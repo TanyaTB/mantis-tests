@@ -12,7 +12,6 @@ namespace mantis_tests
     {
 
 
-
         [Test]
         public void TestProjectCreation()
         {

@@ -11,8 +11,6 @@ namespace mantis_tests
     public class LoginTests : TestBase
     {
 
-
-
         [Test]
         public void TestLogin()
         {
