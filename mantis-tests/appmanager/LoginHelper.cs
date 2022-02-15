@@ -40,8 +40,6 @@ namespace mantis_tests
             if (IsLoggedIn())
             {
                 driver.FindElement(By.ClassName("user-info")).Click();
-
-               // driver.FindElement(By.ClassName("fa fa-sign -out ace - icon")).Click(); 
                 driver.FindElement(By.CssSelector("#navbar-container > div.navbar-buttons.navbar-header.navbar-collapse.collapse > ul > li.grey.open > ul > li:nth-child(4) > a")).Click();
             }
         }

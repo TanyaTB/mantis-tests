@@ -29,7 +29,7 @@ namespace mantis_tests
         public void StartProjectCreation()
         {
             driver.FindElement(By.CssSelector("form[action=\"manage_proj_create_page.php\"]")).Click();
-           
+
 
         }
 

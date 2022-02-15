@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Threading;
 
 namespace mantis_tests
 {
 
     [TestFixture]
-    public class NewProject : AuthBase
+    public class ApiProjectTests : AuthBase
     {
-
-
+        
         [Test]
-        public void TestProjectCreation()
+
+        public void TestProjectCreationAPI()
         {
             AccountData account = new AccountData()
             {
@@ -31,30 +32,12 @@ namespace mantis_tests
 
             };
 
-            app.Login.Login(account);
-            app.MenuManager.OpenMenuProject();
+            app.API.CreateNewProject(account, project);
 
-            List<ProjectData> oldProjects = app.Project.GetProjectList();
-
-            app.Project.Create(project);
-
-            int i = app.Project.GetProjectCount();
-
-          //  Assert.AreEqual(oldProjects.Count+1, app.Project.GetProjectCount());
-
-            List<ProjectData> newProjects = app.Project.GetProjectList();
-            Assert.AreEqual(oldProjects.Count + 1, newProjects.Count);
-
-            oldProjects.Add(project);
-
-            oldProjects.Sort();
-            newProjects.Sort();
-
-           Assert.AreEqual(oldProjects, newProjects);
         }
 
         [Test]
-        public void TestProjectRemoval()
+        public void TestProjectRemovalAPI()
         {
             AccountData account = new AccountData()
             {
@@ -72,24 +55,52 @@ namespace mantis_tests
 
             };
 
+            int projectsCount = app.API.GetProjectsList(account).Length;
+
+
+            if (projectsCount == 0)
+            {
+                app.API.CreateNewProject(account, project);
+            }
+
+            
             app.Login.Login(account);
             app.MenuManager.OpenMenuProject();
 
-
-            if (app.Project.GetProjectCount() == 0)
-            {
-                app.Project.Create(project);
-            }
             List<ProjectData> oldProjects = app.Project.GetProjectList();
-
 
             app.Project.Remove();
 
-            Assert.AreEqual(oldProjects.Count-1, app.Project.GetProjectCount());
-            app.Login.Logout();
+            Thread.Sleep(5000);
+
+            List<ProjectData> newProjects = app.Project.GetProjectList();
+
+            Assert.AreEqual(oldProjects.Count - 1, newProjects.Count);
+        
+
 
         }
 
+        [Test]
+
+        public void GetListAPI()
+        {
+            AccountData account = new AccountData()
+            {
+
+                Name = "administrator",
+                Password = "root",
+
+            };
+
+            Mantis.ProjectData[] projects = app.API.GetProjectsList(account);
+
+            foreach (Mantis.ProjectData project in projects)
+                Console.Out.WriteLine(project.name);
+
+        }
+
+        [Test]
 
         public void GetList()
         {
@@ -117,6 +128,12 @@ namespace mantis_tests
 
 
         }
+
+
+
+
+
+
 
 
 
